@@ -32,7 +32,8 @@ add_executable(core_tests
   test_intervalometer.cpp
   test_command.cpp
   test_sky.cpp
-  test_queue.cpp)
+  test_queue.cpp
+  test_app.cpp)
 target_link_libraries(core_tests PRIVATE st_core Threads::Threads)
 target_compile_options(core_tests PRIVATE -Wall -Wextra -Werror)
 
