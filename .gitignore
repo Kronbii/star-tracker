@@ -1,0 +1,27 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+build/
+dist/
+
+# Ephemeris files are downloaded, not committed (see tools/fetch_ephemeris.py)
+data/ephemeris/*.bsp
+
+# Host C++ test build
+firmware/test/build/
+
+# Arduino build output
+firmware/build/
+
+# CAD intermediates
+cad/build/
+
+# Editors / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
