@@ -1,0 +1,28 @@
+group,item,part number / spec,qty,unit_usd_est,total_usd_est,notes
+electronics,ESP32 dev board,Espressif ESP32-DevKitC-32E (ESP32-WROOM-32E) or 38-pin clone,1,10.00,10.00,clone ~5 USD
+electronics,Stepper driver,TMC2209 module (BIGTREETECH TMC2209 V1.3 or FYSETC TMC2209),1,6.00,6.00,standalone STEP/DIR; MS1=MS2=3V3 for 1/16
+electronics,Stepper motor,NEMA17 1.8 deg 40 mm 1.5-1.7 A (e.g. 17HS4401),1,10.00,10.00,needs ~12 mN.m; any NEMA17 works
+electronics,Buck converter,MP1584EN module 12 V -> 5.0 V,1,1.50,1.50,set to 5.0 V before connecting the ESP32
+electronics,Optocoupler,PC817C DIP-4 (Sharp / Everlight),2,0.25,0.50,shutter + focus
+electronics,Resistors,470 R x2 (opto LEDs); 100 k + 22 k (battery divider),4,0.05,0.20,1/4 W
+electronics,Capacitor,100 uF 35 V electrolytic (driver VM),1,0.30,0.30,
+electronics,Home switch,KW12-3 / Omron SS-5GL micro switch with lever (wired NC),1,1.00,1.00,
+electronics,Camera cable,Canon E3 2.5 mm TRS cable (RS-60E3 replacement cable),1,4.00,4.00,tip=shutter ring=focus sleeve=ground
+electronics,Panel jacks,2.5 mm stereo jack; 5.5/2.1 DC jack,2,0.80,1.60,
+electronics,Power switch,MTS-102 mini toggle,1,0.80,0.80,
+electronics,Perfboard + connectors,70x50 perfboard; female headers; JST-XH 4-pin; 22 AWG wire,1,4.00,4.00,
+electronics,Power source,3S Li-ion 2600 mAh pack with BMS (or USB-C PD trigger at 12 V + PD power bank),1,15.00,15.00,~2-3 W draw -> 8+ h
+mechanics,Lead screw,Tr8x2 single start (2 mm lead) 250 mm with brass flange nut,1,8.00,8.00,NOT the common Tr8x8 - the lead sets the ratio
+mechanics,Flexible coupler,5 mm x 8 mm aluminium jaw (spider) coupler D19 L25,1,2.00,2.00,
+mechanics,Smooth rods,8 mm h6 chrome rod 250 mm,3,2.50,7.50,two for the tower; cut 130 mm from the third for the hinge shaft
+mechanics,Linear bearings,LM8UU,2,1.00,2.00,
+mechanics,Ball bearings,608ZZ 8x22x7,4,0.50,2.00,2 hinge + 1 screw top + 1 roller
+mechanics,Strike strip,steel flat bar 10 x 2 mm x 92 mm (hard; ground flat if possible),1,2.00,2.00,a section of an old steel rule or a 10x2 key-steel bar
+mechanics,Fasteners,M3 x10..35 (x30) M3 heat-set inserts (x8) M4 x16 wood screws (x20) M5 x30 + T-nuts (x6) M8 x25 SHCS + nut + washers,1,8.00,8.00,
+mechanics,Tripod hardware,3/8-16 T-nut (tripod) + 1/4-20 x 25 bolt and nut (ball head),1,2.00,2.00,
+mechanics,Ball heads,one sturdy head under the tracker (>= 5 kg rated) + one small head for the camera,2,17.50,35.00,a geared head under the tracker makes polar alignment much easier
+mechanics,Plywood,12 mm birch ply: bottom 275 x 195 and top 290 x 110 mm,1,5.00,5.00,
+mechanics,Sight tube,16 mm OD aluminium tube (1 mm wall) or 16 mm electrical conduit 200 mm,1,2.00,2.00,cut to sight_len - 2 mm
+mechanics,Preload,2 tension springs (~20 N at 50 mm) or strong rubber bands + 4 screw eyes,1,2.00,2.00,keeps the strip on the roller in any orientation
+printing,Filament,PETG ~350 g (structural parts) + PLA/PETG black ~30 g (caps; mask),1,8.00,8.00,
+total,,,,,140.40,estimate; excludes tripod and camera; shipping and local retail prices not included
