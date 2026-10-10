@@ -31,7 +31,7 @@ if [[ "${SKIP_RENDERS:-0}" != "1" ]]; then
   "$OPENSCAD" "${BACKEND[@]}" -q "${R[@]}" -D 'part="assembly"' -D theta=18 -D show_camera=true \
     --imgsize=1600,1200 --camera=95,40,60,62,0,210,1050 --projection=p -o build/in_use_raw.png star_tracker.scad
   "$OPENSCAD" "${BACKEND[@]}" -q "${R[@]}" -D 'part="contact_max"' \
-    --imgsize=1200,900 --camera=200,0,120,90,0,0,330 --projection=o -o build/contact_raw.png star_tracker.scad
+    --imgsize=1200,900 --camera=0,0,0,90,0,0,10 --viewall --autocenter --projection=o -o build/contact_raw.png star_tracker.scad
   PY=${PYTHON:-../.venv/bin/python}
   [[ -x "$PY" ]] || PY=python3
   "$PY" finish_renders.py
