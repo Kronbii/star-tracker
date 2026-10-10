@@ -1,0 +1,108 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  ESP32_CORE_VERSION: "3.3.11"
+  ESP32_INDEX_URL: https://espressif.github.io/arduino-esp32/package_esp32_index.json
+
+jobs:
+  python:
+    name: Python tools (ruff + pytest)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install
+        run: pip install -e ".[dev]"
+      - name: Ruff
+        run: |
+          ruff check .
+          ruff format --check .
+      - name: Cache JPL DE421 ephemeris
+        uses: actions/cache@v4
+        with:
+          path: data/ephemeris/de421.bsp
+          key: ephemeris-de421-v1
+      - name: Fetch ephemeris (tests skip the skyfield comparison if this fails)
+        run: |
+          if [ ! -f data/ephemeris/de421.bsp ]; then
+            startracker fetch-ephemeris || echo "::warning::DE421 download failed; skyfield comparison will be skipped"
+          fi
+      - name: Pytest
+        run: pytest -q
+
+  cpp:
+    name: Firmware core (host C++ tests)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure
+        run: cmake -S firmware/test -B firmware/test/build -DCMAKE_BUILD_TYPE=Debug
+      - name: Build
+        run: cmake --build firmware/test/build -j
+      - name: Unit tests (ASan + UBSan)
+        run: firmware/test/build/core_tests
+      - name: Tracking simulation matches the committed data
+        run: |
+          firmware/test/build/track_sim 2.4 30 > /tmp/track_sim.csv
+          python3 - <<'PY'
+          import csv
+          a = list(csv.DictReader(open("/tmp/track_sim.csv")))
+          b = list(csv.DictReader(open("figures/data/track_sim.csv")))
+          assert len(a) == len(b), (len(a), len(b))
+          for x, y in zip(a, b):
+              assert x["steps"] == y["steps"], (x, y)
+              assert abs(float(x["angle_deg"]) - float(y["angle_deg"])) < 1e-6, (x, y)
+              assert abs(float(x["err_arcsec"]) - float(y["err_arcsec"])) < 1e-3, (x, y)
+          print("track_sim output matches", len(a), "rows")
+          PY
+
+  firmware:
+    name: Firmware (arduino-cli, ESP32)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: arduino/setup-arduino-cli@v2
+      - name: Cache Arduino ESP32 core
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.arduino15/packages
+            ~/.arduino15/staging
+          key: arduino-esp32-${{ env.ESP32_CORE_VERSION }}-v1
+      - name: "Install core (with retries; the index and toolchains are large)"
+        run: |
+          arduino-cli config init --overwrite
+          arduino-cli config add board_manager.additional_urls "$ESP32_INDEX_URL"
+          arduino-cli config set network.connection_timeout 600s
+          for i in 1 2 3; do arduino-cli core update-index && break; sleep 20; done
+          for i in 1 2 3; do arduino-cli core install "esp32:esp32@$ESP32_CORE_VERSION" && break; sleep 30; done
+      - name: Compile
+        run: arduino-cli compile --fqbn esp32:esp32:esp32 --warnings all --output-dir build firmware/star_tracker
+      - uses: actions/upload-artifact@v4
+        with:
+          name: star_tracker-esp32
+          path: build/*.bin
+
+  cad:
+    name: CAD (OpenSCAD export)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install OpenSCAD
+        run: sudo apt-get update && sudo apt-get install -y openscad
+      - name: Export every part and the drill templates
+        run: SKIP_RENDERS=1 cad/build.sh
+      - name: Check outputs
+        run: |
+          for f in cad/stl/*.stl cad/templates/*.svg; do test -s "$f" || { echo "empty $f"; exit 1; }; done
+          ls -l cad/stl cad/templates

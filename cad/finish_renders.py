@@ -10,9 +10,9 @@ from pathlib import Path
 import matplotlib
 
 matplotlib.use("Agg")
-import matplotlib.image as mpimg  # noqa: E402
-import matplotlib.pyplot as plt  # noqa: E402
-import numpy as np  # noqa: E402
+import matplotlib.image as mpimg
+import matplotlib.pyplot as plt
+import numpy as np
 
 HERE = Path(__file__).resolve().parent
 OUT = HERE.parent / "figures"
@@ -39,24 +39,54 @@ def finish(src: Path, dst: Path, sub: str) -> None:
         "edgecolor": "#b7d3a8",
         "linewidth": 1.2,
     }
-    fig.text(0.018, 0.965, LABEL, color="#eef1ec", fontsize=size, fontweight="bold",
-             va="top", ha="left", bbox=box)
-    sub_box = {"boxstyle": "round,pad=0.35", "facecolor": "#121614", "edgecolor": "none",
-               "alpha": 0.85}
-    fig.text(0.018, 0.03, sub, color="#b5b8b4", fontsize=size * 0.75, va="bottom", ha="left",
-             bbox=sub_box)
+    fig.text(
+        0.018,
+        0.965,
+        LABEL,
+        color="#eef1ec",
+        fontsize=size,
+        fontweight="bold",
+        va="top",
+        ha="left",
+        bbox=box,
+    )
+    sub_box = {
+        "boxstyle": "round,pad=0.35",
+        "facecolor": "#121614",
+        "edgecolor": "none",
+        "alpha": 0.85,
+    }
+    fig.text(
+        0.018,
+        0.03,
+        sub,
+        color="#b5b8b4",
+        fontsize=size * 0.75,
+        va="bottom",
+        ha="left",
+        bbox=sub_box,
+    )
     fig.savefig(dst, dpi=dpi, facecolor="#121614")
     plt.close(fig)
     print("wrote", dst)
 
 
 JOBS = (
-    ("hero_raw.png", "hero_render.png",
-     "OpenSCAD model, board angle 18 deg, camera omitted. Design only: not built, not sky-tested."),
-    ("in_use_raw.png", "cad_in_use.png",
-     "OpenSCAD model with stand-in camera and ball head (grey blocks). Design only: not built."),
-    ("contact_raw.png", "cad_contact_39deg.png",
-     "Clearance check at the end of travel (39 deg), viewed along the hinge axis. Design only."),
+    (
+        "hero_raw.png",
+        "hero_render.png",
+        "OpenSCAD model, board at 18 deg, no camera. Design only: not built, not sky-tested.",
+    ),
+    (
+        "in_use_raw.png",
+        "cad_in_use.png",
+        "OpenSCAD model with stand-in camera and ball head (grey blocks). Design only: not built.",
+    ),
+    (
+        "contact_raw.png",
+        "cad_contact_39deg.png",
+        "Clearance check at the end of travel (39 deg), viewed along the hinge axis. Design only.",
+    ),
 )
 
 for raw, target, sub in JOBS:

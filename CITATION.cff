@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use this design or code, please cite it as below."
+title: "Star tracker: an ESP32 barn-door tracker with firmware tangent correction"
+authors:
+  - family-names: Kronbi
+    given-names: Rami
+version: 0.1.0
+date-released: 2026-10-10
+license: MIT
+abstract: >-
+  A 3D-printed barn-door star tracker for DSLR astrophotography. ESP32 firmware schedules each
+  microstep from the closed-form inverse of the mechanism's geometry; a Python tracking-error
+  model predicts the longest sharp exposure; a planner finds moonless M42 windows from Beirut.
+  Hardware design under CERN-OHL-P-2.0; code under MIT. Performance figures are predictions.
+keywords:
+  - astrophotography
+  - star tracker
+  - barn door
+  - ESP32
+  - embedded
+  - OpenSCAD
